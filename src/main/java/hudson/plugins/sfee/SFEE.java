@@ -32,7 +32,7 @@ public class SFEE {
 	public static <T> T getCollabNetApp(String host, Class<T> klazz) {
 		try {
 			URL endpoint = new URL("http://" + host
-					+ ":8080/ce-soap50/services/"
+					+ "/ce-soap50/services/"
 					+ klazz.getSimpleName().replace("Soap", ""));
 			String serviceName = klazz.getSimpleName();
 			String packageName = klazz.getName().substring(0,

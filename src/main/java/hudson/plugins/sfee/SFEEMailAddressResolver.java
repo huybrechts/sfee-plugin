@@ -53,6 +53,7 @@ public class SFEEMailAddressResolver {
 		public synchronized String findNameFor(User u) {
 			String result = names.get(u.getId());
 			if (result == null) {
+				log.info("No email found for " + u.getId() + ", refreshing userlist from SFEE");
 				update();
 				result = names.get(u.getId());
 				if (result == null) {
