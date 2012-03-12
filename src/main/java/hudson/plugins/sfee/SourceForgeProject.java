@@ -123,18 +123,17 @@ public class SourceForgeProject extends JobProperty<AbstractProject<?, ?>> {
 				return Collections.emptyList();
 			}
 			ProjectSoapRow[] projects = site.getProjects();
-			Collection<ListBoxModel.Option> result = new TreeSet<ListBoxModel.Option>(
-					new Comparator<ListBoxModel.Option>() {
-						public int compare(Option o1, Option o2) {
-							return o1.name.toUpperCase().compareTo(
-									o2.name.toUpperCase());
-						}
-					});
-			result.add(new ListBoxModel.Option(NONE, NONE));
+			List<ListBoxModel.Option> result = new ArrayList<ListBoxModel.Option>(projects.length + 1);
 			for (ProjectSoapRow project : projects) {
 				result.add(new ListBoxModel.Option(project.getTitle(), project
 						.getId()));
 			}
+			Collections.sort(result, new Comparator<ListBoxModel.Option>() {
+						public int compare(Option o1, Option o2) {
+							return o1.name.toUpperCase().compareTo(o2.name.toUpperCase());
+						}
+					});
+			result.add(0, new ListBoxModel.Option(NONE, NONE));
 			return result;
 		}
 
