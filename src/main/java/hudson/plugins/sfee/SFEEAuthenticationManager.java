@@ -8,6 +8,7 @@ import org.acegisecurity.*;
 import org.acegisecurity.providers.AuthenticationProvider;
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.dao.AbstractUserDetailsAuthenticationProvider;
+import org.acegisecurity.userdetails.User;
 import org.acegisecurity.userdetails.UserDetails;
 import org.acegisecurity.userdetails.UserDetailsService;
 
@@ -27,15 +28,9 @@ public class SFEEAuthenticationManager implements AuthenticationProvider {
 		String userName = authentication.getName();
 		String password = Util.fixEmpty((String) ((UsernamePasswordAuthenticationToken) authentication).getCredentials());
 
-		if (password != null && password.equals(SFEESecurityRealm.DESCRIPTOR.getPassword(userName))) {
-			return authentication;
-		}
-
-		String sessionId = SourceForgeSite.DESCRIPTOR.getSite().createSession(userName, password);
 		SFEESecurityRealm.DESCRIPTOR.setPassword(userName,  password);
-
-		return authentication;
-
+		UserDetails user = userDetailsService.loadUserByUsername(userName);
+		return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), user.getAuthorities());
 
 	}
 
